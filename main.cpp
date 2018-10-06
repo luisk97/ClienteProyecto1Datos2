@@ -121,10 +121,9 @@ private:
             //Json::Value root = "{ \"Solicitud\": \"hello\", \"ID\": 147852}";
             Json::FastWriter fastWriter;
             std::string output = fastWriter.write(root);
-            cout << output << endl;
-            cout << "Solicitud: " << root["Solicitud"].asString() << endl;
+            //cout << output << endl;
+            //cout << "Solicitud: " << root["Solicitud"].asString() << endl;
 
-            //quitar esto que solo es para que no se ejecute inmediatamente
             string strAux;
             //cin >> strAux;
 
@@ -148,7 +147,7 @@ public:
 
             int tam = sizeof(T);
             cout<<"tam: "<<tam<<endl;
-            string strtam = std::to_string(tam + 10);
+            string strtam = std::to_string(14);
 
             Json::Value root;
             string text = "{ \"Solicitud\": \"recerbarEspacio\", \"tam\": " + strtam + "}";
@@ -159,12 +158,11 @@ public:
             //Json::Value root = "{ \"Solicitud\": \"hello\", \"ID\": 147852}";
             Json::FastWriter fastWriter;
             std::string output = fastWriter.write(root);
-            cout << output << endl;
-            cout << "Solicitud: " << root["Solicitud"].asString() << endl;
+            //cout << output << endl;
+            //cout << "Solicitud: " << root["Solicitud"].asString() << endl;
 
-            //quitar esto que solo es para que no se ejecute inmediatamente
             string respuesta;
-            //cin >> pausa;
+            //cin >> respuesta;
 
             conexion->setMensaje(output.c_str());
 
@@ -214,10 +212,9 @@ public:
             //Json::Value root = "{ \"Solicitud\": \"hello\", \"ID\": 147852}";
             Json::FastWriter fastWriter;
             std::string output = fastWriter.write(root);
-            cout << output << endl;
-            cout << "Solicitud: " << root["Solicitud"].asString() << endl;
+            //cout << output << endl;
+            //cout << "Solicitud: " << root["Solicitud"].asString() << endl;
 
-            //quitar esto que solo es para que no se ejecute inmediatamente
             string strAux;
             //cin >> strAux;
 
@@ -268,8 +265,8 @@ public:
             //Json::Value root = "{ \"Solicitud\": \"hello\", \"ID\": 147852}";
             Json::FastWriter fastWriter;
             std::string output = fastWriter.write(root);
-            cout << output << endl;
-            cout << "Solicitud: " << root["Solicitud"].asString() << endl;
+            //cout << output << endl;
+            //cout << "Solicitud: " << root["Solicitud"].asString() << endl;
 
             string strAux;
 
@@ -313,8 +310,8 @@ public:
             //Json::Value root = "{ \"Solicitud\": \"hello\", \"ID\": 147852}";
             Json::FastWriter fastWriter;
             std::string output = fastWriter.write(root);
-            cout << output << endl;
-            cout << "Solicitud: " << root["Solicitud"].asString() << endl;
+            //cout << output << endl;
+            //cout << "Solicitud: " << root["Solicitud"].asString() << endl;
 
             string strAux;
             //cin >> pausa;
@@ -331,6 +328,42 @@ public:
             cout<<endl;
         }
     }
+
+
+    void liberarMemoriaServer(){
+        conexion = new socketCliente;
+        if(!(conexion->conectar())) {
+            cout << "ERROR! No se pudo conectar con el servidor" << endl;
+        }else {
+            cout << "Conexion al servidor exitosa" << endl;
+
+            Json::Value root;
+            string text = "{ \"Solicitud\": \"liberarMemoria\"}";
+
+            Json::Reader reader;
+            reader.parse(text, root);
+
+            //Json::Value root = "{ \"Solicitud\": \"hello\", \"ID\": 147852}";
+            Json::FastWriter fastWriter;
+            std::string output = fastWriter.write(root);
+            //cout << output << endl;
+            //cout << "Solicitud: " << root["Solicitud"].asString() << endl;
+
+            string strAux;
+            //cin >> pausa;
+
+            conexion->setMensaje(output.c_str());
+
+            strAux = conexion->recibirMensaje();
+
+            if(strAux == "Error"){
+                cout<<"[ERROR] No se pudo liberar la memoria en el servidor"<<endl;
+            }else{
+                cout<<"Se libero la memoria en el servidor exitosamente"<<endl;
+            }
+        }
+    }
+
 
     template <typename Of, typename What>
     inline bool instanceof(const What &w)
@@ -368,8 +401,11 @@ int main() {
 
     cout<<num<<endl;
     cout<<buf<<endl;
+    cout<<&mp1<<endl;
 
     mp2 = 'a';
+
+    mp1.liberarMemoriaServer();
 
     return 0;
 }
