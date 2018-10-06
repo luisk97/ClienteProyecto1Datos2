@@ -103,17 +103,18 @@ private:
     socketCliente *conexion;
     T dato = NULL;
     //MPointerGC* gc1 = NULL;
-    void Destructor(int id){
+    void Destructor(int idEliminar,int idAumentar){
         conexion = new socketCliente;
         if(!(conexion->conectar())) {
             cout << "ERROR! No se pudo conectar con el servidor" << endl;
         }else {
             cout << "Conexion al servidor exitosa" << endl;
 
-            string strID = std::to_string(id);
+            string strIdElim = std::to_string(idEliminar);
+            string strIdAum = std::to_string(idAumentar);
 
             Json::Value root;
-            string text = "{ \"Solicitud\": \"liberarEspacio\", \"id\": " + strID + "}";
+            string text = "{ \"Solicitud\": \"liberarEspacio\", \"idElim\": " + strIdElim + ", \"idAument\": " + strIdAum +"}";
 
             Json::Reader reader;
             reader.parse(text, root);
@@ -287,7 +288,7 @@ public:
         if(mp.id == 0){
             cout<<"NO se puede igualar algo NULL"<<endl;
         }else {
-            Destructor(this->id);
+            Destructor(this->id,mp.id);
             this->id = mp.id;
         }
     }
@@ -395,9 +396,14 @@ int main() {
     MPointer<char> mp2;
     mp2.New();
 
+    MPointer<int> mp3;
+    mp3.New();
+
     int num = &mp1;
 
     char buf = &mp2;
+
+    mp3 = mp1;
 
     cout<<num<<endl;
     cout<<buf<<endl;
