@@ -44,7 +44,8 @@ public:
         return true;
     };
     void setMensaje(const char *msn){
-        cout<<"bytes enviados "<< send(descriptor,msn,strlen(msn),0)<<endl;
+        //cout<<"bytes enviados "<< send(descriptor,msn,strlen(msn),0)<<endl;
+        send(descriptor,msn,strlen(msn),0);
     };
     string recibirMensaje(){
         while(true) {
@@ -108,7 +109,7 @@ private:
         if(!(conexion->conectar())) {
             cout << "ERROR! No se pudo conectar con el servidor" << endl;
         }else {
-            cout << "Conexion al servidor exitosa" << endl;
+            //cout << "Conexion al servidor exitosa" << endl;
 
             string strIdElim = std::to_string(idEliminar);
             string strIdAum = std::to_string(idAumentar);
@@ -200,7 +201,7 @@ public:
         if(!(conexion->conectar())) {
             cout << "ERROR! No se pudo conectar con el servidor" << endl;
         }else {
-            cout << "Conexion al servidor exitosa" << endl;
+            //cout << "Conexion al servidor exitosa" << endl;
 
             string strID = std::to_string(id);
 
@@ -252,7 +253,7 @@ public:
         if(!(conexion->conectar())) {
             cout << "ERROR! No se pudo conectar con el servidor" << endl;
         }else {
-            cout << "Conexion al servidor exitosa" << endl;
+            //cout << "Conexion al servidor exitosa" << endl;
             int numAux = (int) dat;
             string strID = std::to_string(id);
             string strDato = std::to_string(numAux);
@@ -300,7 +301,12 @@ public:
         }else {
             cout << "Conexion al servidor exitosa" << endl;
 
-            string strtam = to_string(tam);
+            string strtam;
+            if(tam < 12){
+                strtam = to_string(12);
+            }else {
+                strtam = to_string(tam);
+            }
 
             Json::Value root;
             string text = "{ \"Solicitud\": \"recerbarMemoria\", \"tam\": " + strtam + "}";
@@ -390,7 +396,7 @@ MPointer<T> operator *(const MPointer<T> mp){
 int main() {
 
     MPointer<int> mp1;
-    mp1.iniciarMemoriaServer(540);
+    mp1.iniciarMemoriaServer(520);
     mp1.New();
 
     MPointer<char> mp2;
@@ -399,15 +405,27 @@ int main() {
     MPointer<int> mp3;
     mp3.New();
 
+    MPointer<int> mp4;
+    mp4.New();
+
+    mp1 = 32;
+
+    mp2 = 'd';
+
+    mp3 = 99;
+
+    cout<<"EL valor de mp1 es "<<&mp3<<endl;
+
     int num = &mp1;
 
     char buf = &mp2;
 
-    mp3 = mp1;
+    mp1 = mp3;
 
-    cout<<num<<endl;
-    cout<<buf<<endl;
-    cout<<&mp1<<endl;
+    cout<<"EL valor de num es "<<num<<endl;
+    cout<<"EL valor de buf es "<<buf<<endl;
+    cout<<"EL valor de mp1 es "<<&mp1<<endl;
+    cout<<"EL valor de mp3 es "<<&mp3<<endl;
 
     mp2 = 'a';
 
